@@ -98,44 +98,18 @@ const analyticsData: AnalyticsItem[] = [
         isPositive: true,
         icon: '🛒'
     },
-    {
-        title: 'Доставка',
-        value: '92%',
-        change: '+1.2%',
-        isPositive: true,
-        icon: '🚚'
-    },
-    {
-        title: 'Возвраты',
-        value: '3.2%',
-        change: '-0.8%',
-        isPositive: true,
-        icon: '↪️'
-    },
-    {
-        title: 'Отзывы',
-        value: '4.8',
-        change: '+0.2',
-        isPositive: true,
-        icon: '⭐'
-    },
-    {
-        title: 'Поддержка',
-        value: '98%',
-        change: '+0.5%',
-        isPositive: true,
-        icon: '💬'
-    }
 ]
 
-const detailedAnalytics = ref(analyticsData)
-const [parent, cards] = useDragAndDrop(detailedAnalytics.value)
 
-const pagedInvoices = computed(() => {
-    const start = (page.value - 1) * pageSize.value
-    const end = start + pageSize.value
-    return cards.value.slice(start, end)
-})
+
+const [parent, tapes] = useDragAndDrop(analyticsData)
+
+const [parent2, tapes2] = useDragAndDrop([
+    "Depeche Mode",
+    "Duran Duran",
+    "Pet Shop Boys",
+    "Kraftwerk",
+])
 </script>
 
 <template>
@@ -148,8 +122,8 @@ const pagedInvoices = computed(() => {
             </div>
             <div class="mt-8">
                 <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4" ref="parent">
-                    <div v-for="(item, index) in pagedInvoices" :key="index"
-                        class="bg-white/50 backdrop-blur-sm border border-slate-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-move">
+                    <div v-for="(item, index) in tapes" :key="item.title"
+                        class="bg-white/50 cassette backdrop-blur-sm border border-slate-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-move">
                         <div class="flex items-center gap-2">
                             <span class="text-2xl">{{ item.icon }}</span>
                             <h3 class="text-sm font-medium text-slate-700">{{ item.title }}</h3>
@@ -165,25 +139,6 @@ const pagedInvoices = computed(() => {
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="mt-4">
-                <Pagination :items-per-page="pageSize" :total="cards.length" :default-page="page"
-                    @update:page="val => page = val">
-                    <PaginationContent v-slot="{ items }">
-                        <PaginationPrevious />
-
-                        <template v-for="(item, index) in items" :key="index">
-                            <PaginationItem v-if="item.type === 'page'" :value="item.value"
-                                :is-active="item.value === page">
-                                {{ item.value }}
-                            </PaginationItem>
-                        </template>
-
-                        <PaginationEllipsis :index="4" />
-
-                        <PaginationNext />
-                    </PaginationContent>
-                </Pagination>
             </div>
         </div>
     </div>
